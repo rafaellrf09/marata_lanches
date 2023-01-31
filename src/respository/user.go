@@ -2,9 +2,11 @@ package respository
 
 import (
 	"context"
+	"fmt"
 	"mlanches/src/models"
 
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -51,10 +53,15 @@ func (repositoryUser UserRepository) Create(user models.User) error {
 }
 
 func (repositoryUser UserRepository) FindOne(id string) (models.User, error) {
-	filter := bson.D{{Key: "_id", Value: id}}
+	objectId, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return models.User{}, err
+	}
+
+	filter := bson.D{{Key: "_id", Value: objectId}}
 	var result models.User
 
-	err := repositoryUser.collection.FindOne(context.TODO(), filter).Decode(&result)
+	err = repositoryUser.collection.FindOne(context.TODO(), filter).Decode(&result)
 	if err != nil {
 		if err == mongo.ErrNoDocuments {
 			return models.User{}, err
@@ -64,10 +71,15 @@ func (repositoryUser UserRepository) FindOne(id string) (models.User, error) {
 }
 
 func (repositoryUser UserRepository) Delete(id string) (uint16, error) {
-	filter := bson.D{{Key: "_id", Value: id}}
+	objectId, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return 0, err
+	}
 
+	filter := bson.D{{Key: "_id", Value: objectId}}
 	result, err := repositoryUser.collection.DeleteOne(context.TODO(), filter)
 	if err != nil {
+		fmt.Println(err)
 		return 0, err
 	}
 
@@ -75,7 +87,12 @@ func (repositoryUser UserRepository) Delete(id string) (uint16, error) {
 }
 
 func (repositoryUser UserRepository) Update(id string, userUpdate models.User) (uint16, error) {
-	filter := bson.D{{Key: "_id", Value: id}}
+	objectId, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return 0, err
+	}
+
+	filter := bson.D{{Key: "_id", Value: objectId}}
 	update := bson.D{{Key: "$set", Value: userUpdate}}
 
 	result, err := repositoryUser.collection.UpdateOne(context.TODO(), filter, update)

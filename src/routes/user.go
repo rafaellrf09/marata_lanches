@@ -24,13 +24,19 @@ func InsertUserRoutes(router *mux.Router, UserController *controllers.UserContro
 		{
 			URL:    "/users/{id}",
 			Method: http.MethodGet,
-			Func:   func(w http.ResponseWriter, r *http.Request) {},
+			Func:   UserController.FindOne,
 			isAuth: false,
 		},
 		{
 			URL:    "/users/{id}",
 			Method: http.MethodDelete,
-			Func:   func(w http.ResponseWriter, r *http.Request) {},
+			Func:   UserController.Delete,
+			isAuth: false,
+		},
+		{
+			URL:    "/users/{id}",
+			Method: http.MethodPut,
+			Func:   UserController.Update,
 			isAuth: false,
 		},
 	}

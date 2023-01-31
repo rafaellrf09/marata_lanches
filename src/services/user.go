@@ -1,6 +1,8 @@
 package services
 
-import "mlanches/src/models"
+import (
+	"mlanches/src/models"
+)
 
 type UserRepository interface {
 	FindAll() ([]models.User, error)
