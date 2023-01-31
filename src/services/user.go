@@ -6,7 +6,8 @@ type UserRepository interface {
 	FindAll() ([]models.User, error)
 	FindOne(string) (models.User, error)
 	Create(models.User) error
-	Delete(string) (int64, error)
+	Delete(string) (uint16, error)
+	Update(string, models.User) (uint16, error)
 }
 
 type UserService struct {
@@ -34,8 +35,27 @@ func (userService UserService) Create(user models.User) error {
 }
 
 func (userService UserService) FindOne(id string) (models.User, error) {
-	return models.User{}, nil
+	findUser, err := userService.userRepository.FindOne(id)
+	if err != nil {
+		return models.User{}, err
+	}
+
+	return findUser, nil
 }
-func (userService UserService) Delete(id string) (int64, error) {
-	return 0, nil
+
+func (userService UserService) Delete(id string) (uint16, error) {
+	result, err := userService.userRepository.Delete(id)
+	if err != nil {
+		return 0, err
+	}
+	return result, nil
+}
+
+func (userService UserService) Update(id string, userUpdate models.User) (uint16, error) {
+	result, err := userService.userRepository.Update(id, userUpdate)
+	if err != nil {
+		return 0, err
+	}
+
+	return result, nil
 }

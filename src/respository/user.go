@@ -63,7 +63,7 @@ func (repositoryUser UserRepository) FindOne(id string) (models.User, error) {
 	return result, nil
 }
 
-func (repositoryUser UserRepository) Delete(id string) (int64, error) {
+func (repositoryUser UserRepository) Delete(id string) (uint16, error) {
 	filter := bson.D{{Key: "_id", Value: id}}
 
 	result, err := repositoryUser.collection.DeleteOne(context.TODO(), filter)
@@ -71,5 +71,16 @@ func (repositoryUser UserRepository) Delete(id string) (int64, error) {
 		return 0, err
 	}
 
-	return result.DeletedCount, nil
+	return uint16(result.DeletedCount), nil
+}
+
+func (repositoryUser UserRepository) Update(id string, userUpdate models.User) (uint16, error) {
+	filter := bson.D{{Key: "_id", Value: id}}
+	update := bson.D{{Key: "$set", Value: userUpdate}}
+
+	result, err := repositoryUser.collection.UpdateOne(context.TODO(), filter, update)
+	if err != nil {
+		panic(err)
+	}
+	return uint16(result.ModifiedCount), nil
 }

@@ -13,7 +13,8 @@ type UserService interface {
 	Create(models.User) error
 	FindOne(string) (models.User, error)
 	FindAll() ([]models.User, error)
-	Delete(string) (int64, error)
+	Delete(string) (uint16, error)
+	Update(string, models.User) (uint16, error)
 }
 
 type UserController struct {
