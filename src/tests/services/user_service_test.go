@@ -17,29 +17,11 @@ func (repo userRepositoryMock) FindAll() ([]models.User, error) {
 			Password: "123456",
 			Name:     "Rafael Figueiredo",
 			Phone:    "22981393794",
-			Address: models.Address{
-				Street:       "Rua Benjamin COnstant",
-				Number:       "97",
-				Complement:   "Na subida do pronto socorro",
-				Neighborhood: "Centro",
-				City:         "Sao jose do calcado",
-				State:        "ES",
-				ZipCode:      "29470000",
-			},
 		}, {
 			Email:    "wagao@gmail.com",
 			Password: "123456",
 			Name:     "wagao",
 			Phone:    "22222222222",
-			Address: models.Address{
-				Street:       "xxxx",
-				Number:       "x",
-				Complement:   "xxxxx",
-				Neighborhood: "x",
-				City:         "xxxx",
-				State:        "x",
-				ZipCode:      "xxxx",
-			},
 		},
 	}, nil
 }
@@ -47,20 +29,12 @@ func (repo userRepositoryMock) FindOne(id string) (models.User, error) {
 	if id == "11111" {
 		return models.User{}, fmt.Errorf("user not found")
 	}
+
 	return models.User{
 		Email:    "rafaellrf09@gmail.com",
 		Password: "123456",
 		Name:     "Rafael Figueiredo",
 		Phone:    "22981393794",
-		Address: models.Address{
-			Street:       "Rua Benjamin COnstant",
-			Number:       "97",
-			Complement:   "Na subida do pronto socorro",
-			Neighborhood: "Centro",
-			City:         "Sao jose do calcado",
-			State:        "ES",
-			ZipCode:      "29470000",
-		},
 	}, nil
 }
 func (repo userRepositoryMock) Create(user models.User) error {
@@ -91,15 +65,6 @@ func TestCreate(t *testing.T) {
 		Password: "123456",
 		Name:     "Rafael Figueiredo",
 		Phone:    "22981393794",
-		Address: models.Address{
-			Street:       "Rua Benjamin COnstant",
-			Number:       "97",
-			Complement:   "Na subida do pronto socorro",
-			Neighborhood: "Centro",
-			City:         "Sao jose do calcado",
-			State:        "ES",
-			ZipCode:      "29470000",
-		},
 	}
 
 	userError := models.User{
@@ -107,15 +72,6 @@ func TestCreate(t *testing.T) {
 		Password: "123456",
 		Name:     "wagao",
 		Phone:    "22222222222",
-		Address: models.Address{
-			Street:       "xxxx",
-			Number:       "x",
-			Complement:   "xxxxx",
-			Neighborhood: "x",
-			City:         "xxxx",
-			State:        "x",
-			ZipCode:      "xxxx",
-		},
 	}
 
 	if err := userService.Create(userSuccess); err != nil {
@@ -176,15 +132,6 @@ func TestUpdate(t *testing.T) {
 		Password: "123456",
 		Name:     "Rafael Figueiredo",
 		Phone:    "22981393794",
-		Address: models.Address{
-			Street:       "Rua Benjamin COnstant",
-			Number:       "97",
-			Complement:   "Na subida do pronto socorro",
-			Neighborhood: "Centro",
-			City:         "Sao jose do calcado",
-			State:        "ES",
-			ZipCode:      "29470000",
-		},
 	}
 
 	userError := models.User{
@@ -192,15 +139,6 @@ func TestUpdate(t *testing.T) {
 		Password: "123456",
 		Name:     "wagao",
 		Phone:    "22222222222",
-		Address: models.Address{
-			Street:       "xxxx",
-			Number:       "x",
-			Complement:   "xxxxx",
-			Neighborhood: "x",
-			City:         "xxxx",
-			State:        "x",
-			ZipCode:      "xxxx",
-		},
 	}
 
 	_, err := userService.Update("12345", userSuccess)

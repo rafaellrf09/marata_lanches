@@ -24,13 +24,20 @@ func main() {
 
 	defer database.Close(db)
 
+	router := mux.NewRouter()
+
 	userCollection := database.DbConnect(db, "users")
 	userRepository := respository.NewUserRepository(userCollection)
 	userService := services.NewUserService(userRepository)
 	userController := controllers.NewUserController(userService)
+	routes.InsertUserRoutes(router, userController)
 
-	router := mux.NewRouter()
-	routes.Generate(router, userController)
+	addressCollection := database.DbConnect(db, "addresses")
+	addressRepository := respository.NewAddessRepository(addressCollection)
+	addressService := services.NewAddressService(addressRepository)
+	addressController := controllers.NewAddressController(addressService)
+
+	routes.InsertAddressRoutes(router, addressController)
 
 	fmt.Println("Sever Listen Port 5000")
 	http.ListenAndServe("localhost:5000", router)
